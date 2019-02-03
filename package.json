@@ -25,8 +25,7 @@
     "postversion": "npm run changelog && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags",
     "commit": "node_modules/.bin/git-cz",
     "precommit": "node_modules/.bin/lint-staged",
-    "changelog": "node_modules/.bin/conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
-    "travis-deploy-once": "node_modules/.bin/travis-deploy-once"
+    "changelog": "node_modules/.bin/conventional-changelog -p angular -i CHANGELOG.md -s -r 1"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
