@@ -7,7 +7,9 @@ export interface IRequestIdleCallbackDeadline {
   timeRemaining: () => number
 }
 
-export type TIdleTask = (deadline: IRequestIdleCallbackDeadline) => void | Promise<any>
+export type TIdleTask = (
+  deadline: IRequestIdleCallbackDeadline,
+) => void | Promise<any>
 
 declare const requestIdleCallback: (
   callback: TIdleTask,
@@ -30,7 +32,9 @@ export function rIC(task: TIdleTask, timeout?: number): any {
 }
 
 export function cIC(handle: TRequestIdleCallbackHandle): any {
-  return isRequestIdleCallbackSupport() ? cancelIdleCallback(handle) : clearTimeout(handle)
+  return isRequestIdleCallbackSupport()
+    ? cancelIdleCallback(handle)
+    : clearTimeout(handle)
 }
 
 export function isRequestIdleCallbackSupport(): boolean {

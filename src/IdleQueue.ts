@@ -1,4 +1,10 @@
-import { cIC, ensureCallingTasks, IRequestIdleCallbackDeadline, rIC, TIdleTask } from './utils'
+import {
+  cIC,
+  ensureCallingTasks,
+  IRequestIdleCallbackDeadline,
+  rIC,
+  TIdleTask,
+} from './utils'
 
 export interface IIdleQueueOptions {
   ensureTasks?: boolean
@@ -34,7 +40,8 @@ export default class IdleQueue {
 
     this._results = []
 
-    this._boundedRun = (deadline: IRequestIdleCallbackDeadline) => this.run(deadline)
+    this._boundedRun = (deadline: IRequestIdleCallbackDeadline) =>
+      this.run(deadline)
   }
 
   public init() {
@@ -77,7 +84,10 @@ export default class IdleQueue {
     this._dispatch(Event.Start)
 
     try {
-      while (this._tasks.length !== 0 && (deadline.timeRemaining() > 0 || deadline.didTimeout)) {
+      while (
+        this._tasks.length !== 0 &&
+        (deadline.timeRemaining() > 0 || deadline.didTimeout)
+      ) {
         const task = this._tasks.shift()
         if (task) {
           this._results.push(task(deadline))

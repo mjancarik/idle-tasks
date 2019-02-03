@@ -1,8 +1,18 @@
 {
   "name": "idle-tasks",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "The idle-tasks module is for optimization tasks which it can be running lazy. It may be useful for boost your page loading time.",
-  "keywords": ["idle", "tasks", "performance", "requestIdleCallback", "queue", "lazy", "optimization", "boost", "page loading time"],
+  "keywords": [
+    "idle",
+    "tasks",
+    "performance",
+    "requestIdleCallback",
+    "queue",
+    "lazy",
+    "optimization",
+    "boost",
+    "page loading time"
+  ],
   "main": "dist/main.cjs.js",
   "module": "dist/main.es6.js",
   "typings": "dist/types/main.d.ts",
