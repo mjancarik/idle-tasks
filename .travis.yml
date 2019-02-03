@@ -1,0 +1,22 @@
+language: node_js
+cache:
+  directories:
+    - ~/.npm
+node_js:
+  - '10'
+install:
+  - npm install
+jobs:
+  include:
+    - stage: test
+      script: npm run lint && npm run test -- --coverage && npm run build
+      after_script:
+        - "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+    - stage: release
+      script: npm run prebuild && npm run build
+      deploy:
+        provider: npm
+        email: "$NPM_EMAIL"
+        api_key: "$NPM_API_KEY"
+        on:
+          tags: true
