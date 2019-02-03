@@ -6,6 +6,11 @@ node_js:
   - '10'
 install:
   - npm install
+
+stages:
+  - test
+  - name: release
+    if: branch = master
 jobs:
   include:
     - stage: test
@@ -18,5 +23,6 @@ jobs:
         provider: npm
         email: "$NPM_EMAIL"
         api_key: "$NPM_API_KEY"
+        skip_cleanup: true
         on:
           tags: true
