@@ -7,10 +7,6 @@ node_js:
 install:
   - npm install
 
-stages:
-  - test
-  - name: release
-    if: branch = master
 jobs:
   include:
     - stage: test
