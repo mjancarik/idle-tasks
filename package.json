@@ -37,7 +37,7 @@
     "changelog": "node_modules/.bin/conventional-changelog -p angular -i CHANGELOG.md -s -r 1"
   },
   "lint-staged": {
-    "{src,test}/**/*.ts": [
+    "src/**/*.ts": [
       "node_modules/.bin/prettier-tslint fix",
       "git add"
     ]
