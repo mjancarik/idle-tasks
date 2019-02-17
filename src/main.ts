@@ -1,5 +1,6 @@
 // import createMicrotask from './microtask'
 import IdleQueue, { Event, IIdleQueueOptions } from './IdleQueue'
+import { once } from './utils'
 
 // function $registerImaPlugin() {} // tslint:disable-line no-empty
 
@@ -13,4 +14,4 @@ function createIdleQueue(config: IIdleQueueOptions) {
   return idleQueue
 }
 
-export { createIdleQueue, Event, IdleQueue }
+export { createIdleQueue, Event, IdleQueue, once }

@@ -1,7 +1,9 @@
 import {
   cIC,
-  ensureCallingTasks,
+  createMicrotask,
+  DEADLINE,
   IRequestIdleCallbackDeadline,
+  once,
   rIC,
   TIdleTask,
 } from './utils'
@@ -22,15 +24,18 @@ export enum Event {
 export default class IdleQueue {
   private _config: IIdleQueueOptions
   private _scheduleHandler: any
+  private _browserHandler: any
   private _tasks: TIdleTask[] = []
   private _boundedRun: TIdleTask
   private _event: { [TKeyEvent in Event]: TCallback[] }
+  private _dispatchOnce: { [TKeyEvent2 in Event]: (data: object) => void } | {}
   private _results: any[]
 
   constructor(config: IIdleQueueOptions = {}) {
     this._config = config
 
     this._scheduleHandler = null
+    this._browserHandler = null
 
     this._event = {
       [Event.Start]: [],
@@ -40,22 +45,39 @@ export default class IdleQueue {
 
     this._results = []
 
+    this._dispatchOnce = Object.keys(Event).reduce((result, eventName) => {
+      const EVENT = Event[eventName]
+      result[EVENT] = once((data: object) => {
+        this._dispatch(EVENT, data)
+      })
+
+      return result
+    }, {})
+
     this._boundedRun = (deadline: IRequestIdleCallbackDeadline) =>
       this.run(deadline)
   }
 
   public init() {
     if (this._config.ensureTasks) {
-      ensureCallingTasks(this._boundedRun)
+      this._browserHandler = this._createBrowserHandler()
+
+      this._bindEventListener(this._browserHandler)
+    }
+  }
+
+  public destroy() {
+    if (this._config.ensureTasks) {
+      this._unbindEventListener(this._browserHandler)
     }
   }
 
   public addTask(task: TIdleTask): void {
-    this._tasks.push(task)
+    this._tasks.push(task) // vratit id tasku, once
   }
 
   public removeTask(task: TIdleTask): void {
-    const index = this._tasks.indexOf(task)
+    const index = this._tasks.indexOf(task) // nebo id tasku
 
     if (index !== -1) {
       this._tasks.splice(index, 1)
@@ -81,7 +103,7 @@ export default class IdleQueue {
   public run(deadline: IRequestIdleCallbackDeadline) {
     cIC(this._scheduleHandler)
 
-    this._dispatch(Event.Start)
+    this._dispatchOnce[Event.Start]()
 
     try {
       while (
@@ -100,19 +122,38 @@ export default class IdleQueue {
       }
     } catch (error) {
       this._dispatch(Event.Error, { error })
+      this.destroy()
       return
     }
 
     Promise.all(this._results)
       .then(() => {
-        this._dispatch(Event.Finish, { results: this._results })
+        this._dispatchOnce[Event.Finish]({ results: this._results })
+        this.destroy()
       })
       .catch(error => {
         this._dispatch(Event.Error, { error })
+        this.destroy()
       })
   }
 
   private _dispatch(event: Event, data: object = {}) {
     this._event[event].forEach(callback => callback(data))
+  }
+
+  private _createBrowserHandler() {
+    const microtask = createMicrotask(this._boundedRun)
+
+    return once(() => microtask(DEADLINE))
+  }
+
+  private _bindEventListener(handler: () => void) {
+    addEventListener('visibilitychange', handler, true)
+    addEventListener('beforeunload', handler, true)
+  }
+
+  private _unbindEventListener(handler: () => void) {
+    removeEventListener('visibilitychange', handler)
+    removeEventListener('beforeunload', handler)
   }
 }

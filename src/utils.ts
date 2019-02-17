@@ -45,18 +45,22 @@ export function isSafari(): boolean {
   return !!(typeof safari === 'object' && safari.pushNotification)
 }
 
-export function ensureCallingTasks(callback: TIdleTask): void {
-  const microtask = createMicrotask(callback)
-  const handler = () => microtask(DEADLINE)
-
-  addEventListener('visibilitychange', handler, true)
-  if (isSafari()) {
-    addEventListener('beforeunload', handler, true)
-  }
-}
-
 export function createMicrotask(
   task: TIdleTask,
 ): (deadline: IRequestIdleCallbackDeadline) => Promise<void> {
   return deadline => Promise.resolve(deadline).then(task)
+}
+
+export function once(handler: (...rest: any[]) => any) {
+  let isCallHandler = false
+  let result = null
+
+  return (...rest: any[]) => {
+    if (!isCallHandler) {
+      isCallHandler = true
+      result = handler(...rest)
+    }
+
+    return result
+  }
 }

@@ -1,7 +1,27 @@
+import { setGlobalMockMethod, toMockedInstance } from 'to-mock'
 import IdleQueue, { Event, IIdleQueueOptions } from '../IdleQueue'
 import * as utils from '../utils'
 
-jest.mock('../utils')
+declare global {
+  namespace NodeJS {
+    interface Global {
+      addEventListener: any
+      removeEventListener: any
+    }
+  }
+}
+
+jest.mock('../utils', () => {
+  const original = jest.requireActual('../utils')
+
+  setGlobalMockMethod(jest.fn)
+
+  return toMockedInstance(
+    original,
+    { __original__: original },
+    ({ property }) => property === 'once',
+  )
+})
 
 describe('IdleQueue', () => {
   let idleQueue: IdleQueue
@@ -10,10 +30,20 @@ describe('IdleQueue', () => {
     idleQueue = new IdleQueue({ ensureTasks: true, timeout: 50 })
   })
 
-  it('should set ensure callback', () => {
+  it('should bind event listeners for ensuring tasks could be called before unloading page', () => {
+    global.addEventListener = jest.fn()
+
     idleQueue.init()
 
-    expect(utils.ensureCallingTasks).toHaveBeenCalled()
+    expect(global.addEventListener).toHaveBeenCalled()
+  })
+
+  it('should unbind event listeners from dom', () => {
+    global.removeEventListener = jest.fn()
+
+    idleQueue.destroy()
+
+    expect(global.addEventListener).toHaveBeenCalled()
   })
 
   describe('run method', () => {
@@ -25,6 +55,7 @@ describe('IdleQueue', () => {
     beforeEach(() => {
       jest.clearAllMocks()
       idleQueue = new IdleQueue({ ensureTasks: true, timeout: 50 })
+      spyOn(idleQueue, 'destroy')
 
       idleQueue.addTask(task)
       idleQueue.on(Event.Start, start)
@@ -64,6 +95,26 @@ describe('IdleQueue', () => {
 
       setTimeout(() => {
         expect(finish).toHaveBeenCalled()
+        done()
+      }, 0)
+    })
+
+    it('should call Event.Finish only once', done => {
+      idleQueue.run(utils.DEADLINE)
+      idleQueue.run(utils.DEADLINE)
+      idleQueue.run(utils.DEADLINE)
+
+      setTimeout(() => {
+        expect(finish.mock.calls.length).toEqual(1)
+        done()
+      }, 0)
+    })
+
+    it('should call destroy', done => {
+      idleQueue.run(utils.DEADLINE)
+
+      setTimeout(() => {
+        expect(idleQueue.destroy).toHaveBeenCalled()
         done()
       }, 0)
     })
