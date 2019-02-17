@@ -26,7 +26,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "lint": "node_modules/.bin/prettier-tslint fix '**/*.ts'",
+    "lint": "node_modules/.bin/prettier-tslint fix 'src/**/*.ts'",
     "prebuild": "node_modules/.bin/rimraf dist",
     "build": "node_modules/.bin/tsc --module commonjs --emitDeclarationOnly && NODE_ENV='es' node_modules/.bin/rollup -c rollup.config.ts && NODE_ENV='cjs' node_modules/.bin/rollup -c rollup.config.ts",
     "test": "node_modules/.bin/jest --no-watchman",
