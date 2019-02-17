@@ -1,3 +1,13 @@
+<a name="0.0.7"></a>
+## [0.0.7](https://github.com/mjancarik/idle-tasks/compare/0.0.6...0.0.7) (2019-02-17)
+
+
+### Bug Fixes
+
+* **listeners:** add and remove listeners only for browser environment ([72bc84e](https://github.com/mjancarik/idle-tasks/commit/72bc84e))
+
+
+
 <a name="0.0.6"></a>
 ## [0.0.6](https://github.com/mjancarik/idle-tasks/compare/0.0.5...0.0.6) (2019-02-17)
 
