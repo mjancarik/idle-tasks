@@ -1,3 +1,4 @@
+import { type } from 'os'
 import {
   cIC,
   createMicrotask,
@@ -148,12 +149,16 @@ export default class IdleQueue {
   }
 
   private _bindEventListener(handler: () => void) {
-    addEventListener('visibilitychange', handler, true)
-    addEventListener('beforeunload', handler, true)
+    if (typeof addEventListener === 'function') {
+      addEventListener('visibilitychange', handler, true)
+      addEventListener('beforeunload', handler, true)
+    }
   }
 
   private _unbindEventListener(handler: () => void) {
-    removeEventListener('visibilitychange', handler)
-    removeEventListener('beforeunload', handler)
+    if (typeof removeEventListener === 'function') {
+      removeEventListener('visibilitychange', handler)
+      removeEventListener('beforeunload', handler)
+    }
   }
 }
