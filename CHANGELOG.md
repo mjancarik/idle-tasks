@@ -1,3 +1,13 @@
+<a name="0.0.5"></a>
+## [0.0.5](https://github.com/mjancarik/idle-tasks/compare/0.0.4...0.0.5) (2019-02-17)
+
+
+### Features
+
+* **idlequeue:** auto destroy idle queue after finishing all tasks ([b40e751](https://github.com/mjancarik/idle-tasks/commit/b40e751))
+
+
+
 <a name="0.0.4"></a>
 ## [0.0.4](https://github.com/mjancarik/idle-tasks/compare/0.0.3...0.0.4) (2019-02-03)
 
