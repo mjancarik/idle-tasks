@@ -1,6 +1,6 @@
 {
   "name": "idle-tasks",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "The idle-tasks module is for optimization tasks which it can be running lazy. It may be useful for boost your page loading time.",
   "keywords": [
     "idle",
