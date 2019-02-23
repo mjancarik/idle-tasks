@@ -41,10 +41,6 @@ export function isRequestIdleCallbackSupport(): boolean {
   return typeof window === 'object' && typeof requestIdleCallback === 'function'
 }
 
-export function isSafari(): boolean {
-  return !!(typeof safari === 'object' && safari.pushNotification)
-}
-
 export function createMicrotask(
   task: TIdleTask,
 ): (deadline: IRequestIdleCallbackDeadline) => Promise<void> {
