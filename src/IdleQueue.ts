@@ -67,6 +67,9 @@ export default class IdleQueue {
   }
 
   public destroy() {
+    this._results = []
+    this._tasks = []
+
     if (this._config.ensureTasks) {
       this._unbindEventListener(this._browserHandler)
     }
@@ -82,6 +85,10 @@ export default class IdleQueue {
     if (index !== -1) {
       this._tasks.splice(index, 1)
     }
+  }
+
+  public isEmpty(): boolean {
+    return this._tasks.length === 0
   }
 
   public on(event: Event, callback: TCallback) {
@@ -100,14 +107,18 @@ export default class IdleQueue {
     this._scheduleHandler = rIC(this._boundedRun, this._config.timeout)
   }
 
-  public run(deadline: IRequestIdleCallbackDeadline) {
+  public unschedule(): void {
     cIC(this._scheduleHandler)
+  }
+
+  public run(deadline: IRequestIdleCallbackDeadline) {
+    this.unschedule()
 
     this._dispatchOnce[Event.Start]()
 
     try {
       while (
-        this._tasks.length !== 0 &&
+        !this.isEmpty() &&
         (deadline.timeRemaining() > 0 || deadline.didTimeout)
       ) {
         const task = this._tasks.shift()

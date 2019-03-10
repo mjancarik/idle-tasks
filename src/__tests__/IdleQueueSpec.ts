@@ -1,4 +1,9 @@
-import { setGlobalMockMethod, toMockedInstance } from 'to-mock'
+import {
+  objectKeepUnmock,
+  setGlobalKeepUnmock,
+  setGlobalMockMethod,
+  toMockedInstance,
+} from 'to-mock'
 import IdleQueue, { Event, IIdleQueueOptions } from '../IdleQueue'
 import * as utils from '../utils'
 
@@ -15,6 +20,7 @@ jest.mock('../utils', () => {
   const original = jest.requireActual('../utils')
 
   setGlobalMockMethod(jest.fn)
+  setGlobalKeepUnmock(objectKeepUnmock)
 
   return toMockedInstance(
     original,
@@ -55,7 +61,6 @@ describe('IdleQueue', () => {
     beforeEach(() => {
       jest.clearAllMocks()
       idleQueue = new IdleQueue({ ensureTasks: true, timeout: 50 })
-      spyOn(idleQueue, 'destroy')
 
       idleQueue.addTask(task)
       idleQueue.on(Event.Start, start)
@@ -111,6 +116,8 @@ describe('IdleQueue', () => {
     })
 
     it('should call destroy', done => {
+      spyOn(idleQueue, 'destroy')
+
       idleQueue.run(utils.DEADLINE)
 
       setTimeout(() => {
@@ -123,6 +130,46 @@ describe('IdleQueue', () => {
       idleQueue.run(utils.DEADLINE)
 
       expect(task).toHaveBeenCalledWith(utils.DEADLINE)
+    })
+  })
+
+  describe('schedule method', () => {
+    it('should call internal request idle callback', () => {
+      idleQueue.schedule()
+
+      expect(utils.rIC).toHaveBeenCalled()
+    })
+  })
+
+  describe('unschedule method', () => {
+    it('should call internal cancel idle callback', () => {
+      idleQueue.unschedule()
+
+      expect(utils.cIC).toHaveBeenCalled()
+    })
+  })
+
+  describe('destroy method', () => {
+    beforeEach(() => {
+      global.removeEventListener = jest.fn()
+    })
+
+    afterEach(() => {
+      global.removeEventListener = null
+    })
+    it('should remove all tasks from queue', () => {
+      const task = jest.fn()
+
+      idleQueue.addTask(task)
+      idleQueue.destroy()
+
+      expect(idleQueue.isEmpty()).toBeTruthy()
+    })
+
+    it('should remove all listeners', () => {
+      idleQueue.destroy()
+
+      expect(removeEventListener).toHaveBeenCalledTimes(2)
     })
   })
 })
