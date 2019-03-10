@@ -1,3 +1,13 @@
+<a name="0.0.9"></a>
+## [0.0.9](https://github.com/mjancarik/idle-tasks/compare/0.0.8...0.0.9) (2019-03-10)
+
+
+### Features
+
+* **idlequeue:** added unschedule method ([71c8a5c](https://github.com/mjancarik/idle-tasks/commit/71c8a5c))
+
+
+
 <a name="0.0.8"></a>
 ## [0.0.8](https://github.com/mjancarik/idle-tasks/compare/0.0.7...0.0.8) (2019-02-23)
 
