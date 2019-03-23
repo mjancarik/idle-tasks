@@ -1,0 +1,11 @@
+src/
+coverage/
+.npmrc
+.gitignore
+.travis.yml
+CHANGELOG.md
+LICENSE
+README.md
+rollup.config.ts
+tsconfig.json
+tslint.json

@@ -4,7 +4,7 @@ import {
   setGlobalMockMethod,
   toMockedInstance,
 } from 'to-mock'
-import IdleQueue, { Event, IIdleQueueOptions } from '../IdleQueue'
+import IdleQueue, { Event } from '../IdleQueue'
 import * as utils from '../utils'
 
 declare global {

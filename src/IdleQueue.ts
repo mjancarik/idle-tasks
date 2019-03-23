@@ -127,7 +127,7 @@ export default class IdleQueue {
         }
       }
 
-      if (this._tasks.length !== 0) {
+      if (!this.isEmpty()) {
         this.schedule()
         return
       }

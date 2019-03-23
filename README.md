@@ -10,7 +10,7 @@
 
 ## Installation
 
-```
+``` shell
 npm i idle-tasks --save
 ```
 
