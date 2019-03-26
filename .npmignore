@@ -2,6 +2,7 @@ src/
 coverage/
 .npmrc
 .gitignore
+.editorconfig
 .travis.yml
 CHANGELOG.md
 LICENSE

@@ -155,7 +155,11 @@ export default class IdleQueue {
   private _createBrowserHandler() {
     const microtask = createMicrotask(this._boundedRun)
 
-    return once(() => microtask(DEADLINE))
+    return once(() => {
+      microtask(DEADLINE)
+
+      return
+    })
   }
 
   private _bindEventListener(handler: () => void) {
