@@ -1,3 +1,13 @@
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/mjancarik/idle-tasks/compare/0.0.10...0.1.0) (2019-03-26)
+
+
+### Bug Fixes
+
+* **beforeunload:** fixed IE 11 behaviour which showed prompt box ([7396121](https://github.com/mjancarik/idle-tasks/commit/7396121))
+
+
+
 <a name="0.0.10"></a>
 ## [0.0.10](https://github.com/mjancarik/idle-tasks/compare/0.0.9...0.0.10) (2019-03-23)
 
