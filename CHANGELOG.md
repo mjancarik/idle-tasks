@@ -1,3 +1,13 @@
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/mjancarik/idle-tasks/compare/0.1.0...0.1.1) (2019-05-13)
+
+
+### Features
+
+* **idlequeue:** added method isDestroyed ([b63eaed](https://github.com/mjancarik/idle-tasks/commit/b63eaed))
+
+
+
 <a name="0.1.0"></a>
 # [0.1.0](https://github.com/mjancarik/idle-tasks/compare/0.0.10...0.1.0) (2019-03-26)
 
