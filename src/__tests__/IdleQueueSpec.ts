@@ -172,4 +172,31 @@ describe('IdleQueue', () => {
       expect(removeEventListener).toHaveBeenCalledTimes(2)
     })
   })
+
+  describe('isDestroyed method', () => {
+    beforeEach(() => {
+      global.removeEventListener = jest.fn()
+    })
+
+    afterEach(() => {
+      global.removeEventListener = null
+    })
+
+    it('should return false is idle queue is not destroyed', () => {
+      const task = jest.fn()
+
+      idleQueue.addTask(task)
+
+      expect(idleQueue.isDestroyed()).toEqual(false)
+    })
+
+    it('should return false is idle queue is not destroyed', () => {
+      const task = jest.fn()
+
+      idleQueue.addTask(task)
+      idleQueue.destroy()
+
+      expect(idleQueue.isDestroyed()).toEqual(true)
+    })
+  })
 })

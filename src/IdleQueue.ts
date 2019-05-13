@@ -30,6 +30,7 @@ export default class IdleQueue {
   private _event: { [TKeyEvent in Event]: TCallback[] }
   private _dispatchOnce: { [TKeyEvent2 in Event]: (data: object) => void } | {}
   private _results: any[]
+  private _destroyFlag: boolean
 
   constructor(config: IIdleQueueOptions = {}) {
     this._config = config
@@ -44,6 +45,8 @@ export default class IdleQueue {
     }
 
     this._results = []
+
+    this._destroyFlag = false
 
     this._dispatchOnce = Object.keys(Event).reduce((result, eventName) => {
       const EVENT = Event[eventName]
@@ -69,6 +72,7 @@ export default class IdleQueue {
   public destroy() {
     this._results = []
     this._tasks = []
+    this._destroyFlag = true
 
     if (this._config.ensureTasks) {
       this._unbindEventListener(this._browserHandler)
@@ -85,6 +89,10 @@ export default class IdleQueue {
     if (index !== -1) {
       this._tasks.splice(index, 1)
     }
+  }
+
+  public isDestroyed(): boolean {
+    return this._destroyFlag
   }
 
   public isEmpty(): boolean {
