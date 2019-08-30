@@ -8,7 +8,7 @@
 ![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/idle-tasks.svg)
 [![dependencies Status](https://david-dm.org/mjancarik/idle-tasks/status.svg)](https://david-dm.org/mjancarik/idle-tasks)
 
-The common web apps use lot's of javascript today. The javascript on your web is not only own but also third party's. So you need define priority for better performance and some less important code evaluate lazy. The idle-tasks module allow you define queue of tasks which will be evaluated after browser is idle. It use [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback) under the hood. 
+The common web apps use lot's of javascript today. The javascript on your web is not only own but also third party's. So you need define priority for better performance and some less important code evaluate lazy. The idle-tasks module allow you define queue of tasks which will be evaluated after browser is idle. It use [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback) under the hood. If requestIdleCallback was not support in browser it would use setTimeout.
 
 ## Installation
 
@@ -30,7 +30,10 @@ function createTask() {
   }
 }
 
-const idleQueue = createIdleQueue();
+const idleQueue = createIdleQueue({
+  ensureTasks: true,
+  timeout: 1000
+});
 
 idleQueue.addTask(createTask());
 idleQueue.addTask(createTask());

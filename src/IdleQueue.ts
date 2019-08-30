@@ -80,11 +80,11 @@ export default class IdleQueue {
   }
 
   public addTask(task: TIdleTask): void {
-    this._tasks.push(task) // vratit id tasku, once
+    this._tasks.push(task)
   }
 
   public removeTask(task: TIdleTask): void {
-    const index = this._tasks.indexOf(task) // nebo id tasku
+    const index = this._tasks.indexOf(task)
 
     if (index !== -1) {
       this._tasks.splice(index, 1)
