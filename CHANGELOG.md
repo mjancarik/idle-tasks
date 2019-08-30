@@ -1,3 +1,8 @@
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/mjancarik/idle-tasks/compare/0.1.1...0.1.2) (2019-08-30)
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/mjancarik/idle-tasks/compare/0.1.0...0.1.1) (2019-05-13)
 
